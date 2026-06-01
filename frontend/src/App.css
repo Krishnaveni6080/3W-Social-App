@@ -1,0 +1,386 @@
+#root {
+  min-height: 100vh;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  border: 0;
+}
+
+.auth-shell,
+.app-shell {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(72, 187, 120, 0.16), transparent 30rem),
+    linear-gradient(135deg, #f6f8fb 0%, #eef3f7 45%, #f7faf8 100%);
+  color: #1b2a2f;
+}
+
+.auth-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 24rem;
+  gap: 3rem;
+  align-items: center;
+  width: min(68rem, calc(100% - 2rem));
+  min-height: 100vh;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  color: #17a168;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 4.8rem);
+  line-height: 1;
+}
+
+.muted {
+  max-width: 36rem;
+  color: #66777d;
+  font-size: 1.05rem;
+}
+
+.auth-card,
+.composer,
+.post-card {
+  border: 1px solid #dce6e8;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 1rem 2.5rem rgba(30, 54, 61, 0.08);
+}
+
+.auth-card {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+}
+
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border-radius: 8px;
+  background: #edf3f4;
+}
+
+.segmented button,
+.nav-active,
+.primary {
+  color: #fff;
+  background: #19a66f;
+}
+
+.segmented button {
+  min-height: 2.5rem;
+  border-radius: 6px;
+  color: #53656b;
+  background: transparent;
+}
+
+.segmented .active {
+  color: #fff;
+  background: #19a66f;
+}
+
+label {
+  display: grid;
+  gap: 0.4rem;
+  color: #405258;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+input,
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #d5e0e3;
+  border-radius: 8px;
+  padding: 0.8rem 0.9rem;
+  color: #1b2a2f;
+  background: #fff;
+  outline: none;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #19a66f;
+  box-shadow: 0 0 0 3px rgba(25, 166, 111, 0.16);
+}
+
+.primary,
+.refresh,
+.ghost,
+.load-more,
+.post-actions button,
+.file-button {
+  min-height: 2.75rem;
+  border-radius: 8px;
+  padding: 0 1rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.error {
+  margin: 0;
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  color: #9f2a2a;
+  background: #fff0f0;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 17rem minmax(0, 44rem);
+  gap: 2rem;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.sidebar {
+  position: sticky;
+  top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: calc(100vh - 3rem);
+  border: 1px solid #dce6e8;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #fff;
+}
+
+.brand,
+.profile-chip,
+.post-head {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.brand-mark,
+.profile-chip span,
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 2.7rem;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  color: #fff;
+  background: #26383f;
+  font-weight: 900;
+}
+
+small {
+  display: block;
+  color: #7b8c91;
+  font-size: 0.78rem;
+}
+
+nav {
+  display: grid;
+  gap: 0.4rem;
+}
+
+nav button,
+.ghost,
+.refresh,
+.post-actions button,
+.load-more {
+  color: #405258;
+  background: #eef3f4;
+}
+
+nav button {
+  min-height: 2.75rem;
+  border-radius: 8px;
+  text-align: left;
+  padding: 0 1rem;
+  font-weight: 800;
+}
+
+.profile-chip {
+  margin-top: auto;
+  min-width: 0;
+}
+
+.profile-chip div {
+  min-width: 0;
+}
+
+.profile-chip small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.feed-column {
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.topbar h1 {
+  font-size: clamp(2rem, 6vw, 3rem);
+}
+
+.composer {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1rem;
+}
+
+.composer textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+.composer-actions,
+.post-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.file-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  color: #405258;
+  background: #eef3f4;
+  overflow: hidden;
+}
+
+.file-button input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.image-preview,
+.post-image {
+  width: 100%;
+  max-height: 28rem;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #dfe7e8;
+}
+
+.post-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.post-card {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1rem;
+}
+
+.avatar {
+  background: #19a66f;
+}
+
+.post-text {
+  margin: 0;
+  color: #27383e;
+  white-space: pre-wrap;
+}
+
+.stats {
+  display: flex;
+  gap: 1rem;
+  color: #63777d;
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+.names {
+  margin: 0;
+  color: #63777d;
+  font-size: 0.86rem;
+}
+
+.post-actions {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+.post-actions .liked {
+  color: #fff;
+  background: #19a66f;
+}
+
+.comments {
+  display: grid;
+  gap: 0.4rem;
+  border-top: 1px solid #e3ecee;
+  padding-top: 0.8rem;
+}
+
+.comments p {
+  margin: 0;
+  color: #405258;
+}
+
+.load-more {
+  justify-self: center;
+  min-width: 10rem;
+}
+
+@media (max-width: 760px) {
+  .auth-panel,
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-panel {
+    align-content: center;
+    gap: 1.5rem;
+    padding: 1rem 0;
+  }
+
+  .app-shell {
+    padding: 1rem;
+  }
+
+  .sidebar {
+    position: static;
+    height: auto;
+  }
+
+  nav {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  nav button {
+    text-align: center;
+    padding: 0 0.5rem;
+  }
+
+  .composer-actions,
+  .post-actions {
+    grid-template-columns: 1fr;
+  }
+}
