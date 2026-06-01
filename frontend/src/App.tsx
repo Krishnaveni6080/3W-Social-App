@@ -32,6 +32,7 @@ type Post = {
 };
 
 type AuthMode = "login" | "signup";
+type FeedView = "all" | "mine" | "commented";
 
 function App() {
   const [authMode, setAuthMode] = useState<AuthMode>("login");
@@ -45,6 +46,7 @@ function App() {
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [feedView, setFeedView] = useState<FeedView>("all");
   const [authForm, setAuthForm] = useState({ username: "", email: "", password: "" });
   const [postForm, setPostForm] = useState({ text: "", image: "" });
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({});
@@ -63,7 +65,7 @@ function App() {
     if (token) {
       loadPosts(1, true);
     }
-  }, [token]);
+  }, [token, feedView]);
 
   async function api<T>(path: string, options: RequestInit = {}): Promise<T> {
     const res = await fetch(`${API_URL}${path}`, {
@@ -109,7 +111,7 @@ function App() {
     setError("");
     try {
       const data = await api<{ posts: Post[]; page: number; totalPages: number }>(
-        `/posts?page=${nextPage}&limit=5`
+        `/posts?page=${nextPage}&limit=5&filter=${feedView}`
       );
       setPosts((current) => (reset ? data.posts : [...current, ...data.posts]));
       setPage(data.page + 1);
@@ -136,7 +138,9 @@ function App() {
           image: postForm.image.trim(),
         }),
       });
-      setPosts((current) => [data.post, ...current]);
+      if (feedView === "all" || feedView === "mine") {
+        setPosts((current) => [data.post, ...current]);
+      }
       setPostForm({ text: "", image: "" });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Post could not be created");
@@ -167,6 +171,24 @@ function App() {
     }
   }
 
+  async function deletePost(postId: string) {
+    const confirmed = window.confirm("Delete this post permanently?");
+    if (!confirmed) return;
+
+    try {
+      await api<{ message: string }>(`/posts/${postId}`, { method: "DELETE" });
+      setPosts((current) => current.filter((post) => post._id !== postId));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Post could not be deleted");
+    }
+  }
+
+  function changeFeedView(nextView: FeedView) {
+    setFeedView(nextView);
+    setPage(1);
+    setHasMore(true);
+  }
+
   function replacePost(updated: Post) {
     setPosts((current) => current.map((post) => (post._id === updated._id ? updated : post)));
   }
@@ -175,6 +197,7 @@ function App() {
     setToken("");
     setUser(null);
     setPosts([]);
+    setFeedView("all");
     localStorage.removeItem("social_token");
     localStorage.removeItem("social_user");
   }
@@ -271,9 +294,24 @@ function App() {
           </div>
         </div>
         <nav>
-          <button className="nav-active">Home</button>
-          <button>Posts</button>
-          <button>Comments</button>
+          <button
+            className={feedView === "all" ? "nav-active" : ""}
+            onClick={() => changeFeedView("all")}
+          >
+            Home
+          </button>
+          <button
+            className={feedView === "mine" ? "nav-active" : ""}
+            onClick={() => changeFeedView("mine")}
+          >
+            My Posts
+          </button>
+          <button
+            className={feedView === "commented" ? "nav-active" : ""}
+            onClick={() => changeFeedView("commented")}
+          >
+            Comments
+          </button>
         </nav>
         <div className="profile-chip">
           <span>{initials}</span>
@@ -291,7 +329,11 @@ function App() {
         <header className="topbar">
           <div>
             <p className="eyebrow">Community</p>
-            <h1>Social Feed</h1>
+            <h1>
+              {feedView === "all" && "Social Feed"}
+              {feedView === "mine" && "My Posts"}
+              {feedView === "commented" && "Commented Posts"}
+            </h1>
           </div>
           <button className="refresh" onClick={() => loadPosts(1, true)} disabled={loading}>
             Refresh
@@ -327,6 +369,7 @@ function App() {
         <div className="post-list">
           {posts.map((post) => {
             const liked = post.likedBy.some((like) => like.userId === user.id);
+            const canDelete = post.userId === user.id;
             return (
               <article className="post-card" key={post._id}>
                 <div className="post-head">
@@ -335,6 +378,11 @@ function App() {
                     <strong>{post.username}</strong>
                     <small>{new Date(post.createdAt).toLocaleString()}</small>
                   </div>
+                  {canDelete && (
+                    <button className="delete-button" onClick={() => deletePost(post._id)}>
+                      Delete
+                    </button>
+                  )}
                 </div>
 
                 {post.text && <p className="post-text">{post.text}</p>}
@@ -374,6 +422,16 @@ function App() {
               </article>
             );
           })}
+          {!loading && posts.length === 0 && (
+            <section className="empty-state">
+              <strong>No posts here yet.</strong>
+              <span>
+                {feedView === "all" && "Create the first post in the community feed."}
+                {feedView === "mine" && "Your posts will appear here after you publish them."}
+                {feedView === "commented" && "Posts you comment on will appear here."}
+              </span>
+            </section>
+          )}
         </div>
 
         {hasMore && (

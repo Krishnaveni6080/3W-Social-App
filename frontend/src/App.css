@@ -171,6 +171,10 @@ textarea:focus {
   align-items: center;
 }
 
+.post-head {
+  position: relative;
+}
+
 .brand-mark,
 .profile-chip span,
 .avatar {
@@ -210,6 +214,11 @@ nav button {
   text-align: left;
   padding: 0 1rem;
   font-weight: 800;
+}
+
+nav button.nav-active {
+  color: #fff;
+  background: #19a66f;
 }
 
 .profile-chip {
@@ -303,6 +312,18 @@ nav button {
   background: #19a66f;
 }
 
+.delete-button {
+  margin-left: auto;
+  min-height: 2.25rem;
+  border-radius: 8px;
+  padding: 0 0.8rem;
+  color: #9f2a2a;
+  background: #fff0f0;
+  font-size: 0.86rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
 .post-text {
   margin: 0;
   color: #27383e;
@@ -342,6 +363,21 @@ nav button {
 .comments p {
   margin: 0;
   color: #405258;
+}
+
+.empty-state {
+  display: grid;
+  gap: 0.25rem;
+  border: 1px dashed #b8c8cc;
+  border-radius: 8px;
+  padding: 1.25rem;
+  color: #405258;
+  background: rgba(255, 255, 255, 0.72);
+  text-align: center;
+}
+
+.empty-state span {
+  color: #7b8c91;
 }
 
 .load-more {

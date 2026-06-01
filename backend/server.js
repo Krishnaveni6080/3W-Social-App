@@ -131,10 +131,20 @@ app.get("/api/posts", auth, async (req, res) => {
   const page = Math.max(Number(req.query.page) || 1, 1);
   const limit = Math.min(Math.max(Number(req.query.limit) || 5, 1), 20);
   const skip = (page - 1) * limit;
+  const filter = String(req.query.filter || "all");
+  const query = {};
+
+  if (filter === "mine") {
+    query.userId = req.user._id;
+  }
+
+  if (filter === "commented") {
+    query["comments.userId"] = req.user._id;
+  }
 
   const [posts, total] = await Promise.all([
-    Post.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
-    Post.countDocuments(),
+    Post.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit),
+    Post.countDocuments(query),
   ]);
 
   res.json({
@@ -182,6 +192,18 @@ app.post("/api/posts/:id/like", auth, async (req, res) => {
 
   await post.save();
   res.json({ post });
+});
+
+app.delete("/api/posts/:id", auth, async (req, res) => {
+  const post = await Post.findById(req.params.id);
+  if (!post) return res.status(404).json({ message: "Post not found" });
+
+  if (String(post.userId) !== String(req.user._id)) {
+    return res.status(403).json({ message: "You can only delete your own posts" });
+  }
+
+  await post.deleteOne();
+  res.json({ message: "Post deleted" });
 });
 
 app.post("/api/posts/:id/comments", auth, async (req, res) => {
