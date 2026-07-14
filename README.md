@@ -87,5 +87,5 @@ http://localhost:5000/api/health
 ## Live URLs
 
 - Frontend: https://3-w-social-app-delta.vercel.app/
-- Backend: `https://threew-social-app-3t21.onrender.com`
-- Backend health check: `https://threew-social-app-3t21.onrender.com/api/health`
+- Backend: https://threew-social-app-3t21.onrender.com
+- Backend health check: https://threew-social-app-3t21.onrender.com/api/health
